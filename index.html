@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>国士無荘  - アカウント作成</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>国士無荘</h1>
+    <p class="subtitle">KOKUSHI MUSO</p>
+
+    <div class="panel">
+        <h2>アカウント作成</h2>
+
+        <p>お名前を入力してください</p>
+
+        <input type="text" id="name" class="name-input"
+               placeholder="お名前">
+
+        <button class="main-button" onclick="createAccount()">
+            勝負を始める
+        </button>
+    </div>
+
+</div>
+
+<script>
+function createAccount() {
+
+    const name = document.getElementById("name").value.trim();
+
+    if (name === "") {
+        alert("名前を入力してください。");
+        return;
+    }
+
+    // 名前を保存
+    localStorage.setItem("playerName", name);
+
+    // 初期点数
+    localStorage.setItem("score", "100000");
+
+    // 特定の名前の場合だけ管理者ページへ 
+	if (name === "09028020882") { 
+		location.href = "master.html"; 
+	} 
+	else { // 通常のゲーム選択画面へ 
+	location.href = "games.html"; 
+}
+}
+</script>
+
+</body>
+</html>

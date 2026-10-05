@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>国士無荘 - 麻雀</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>国士無荘</h1>
+    <p class="subtitle">麻雀 - MAHJONG</p>
+
+    <div class="score-board">
+        <p>現在の点数</p>
+        <div id="score">100,000</div>
+        <span>点</span>
+    </div>
+
+    <h2 class="section-title">加点</h2>
+
+    <div class="score-buttons">
+        <button onclick="changeScore(1500)">+1,500</button>
+        <button onclick="changeScore(3000)">+3,000</button>
+        <button onclick="changeScore(6000)">+6,000</button>
+        <button onclick="changeScore(12000)">+12,000</button>
+        <button onclick="changeScore(18000)">+18,000</button>
+        <button onclick="changeScore(24000)">+24,000</button>
+        <button onclick="changeScore(36000)">+36,000</button>
+        <button onclick="changeScore(48000)">+48,000</button>
+    </div>
+
+    <h2 class="section-title minus-title">減点</h2>
+
+    <div class="score-buttons minus">
+        <button onclick="changeScore(-500)">-500</button>
+        <button onclick="changeScore(-1000)">-1,000</button>
+        <button onclick="changeScore(-1500)">-1,500</button>
+        <button onclick="changeScore(-2000)">-2,000</button>
+        <button onclick="changeScore(-4000)">-4,000</button>
+        <button onclick="changeScore(-6000)">-6,000</button>
+        <button onclick="changeScore(-8000)">-8,000</button>
+        <button onclick="changeScore(-12000)">-12,000</button>
+        <button onclick="changeScore(-16000)">-16,000</button>
+        <button onclick="changeScore(-18000)">-18,000</button>
+        <button onclick="changeScore(-24000)">-24,000</button>
+        <button onclick="changeScore(-36000)">-36,000</button>
+        <button onclick="changeScore(-48000)">-48,000</button>
+    </div>
+
+    <button class="back-button" onclick="location.href='games.html'">
+        ゲーム選択へ戻る
+    </button>
+
+	<button class="logout-button" onclick="location.href='logout.html'">
+	    ログアウト
+	</button>
+
+</div>
+
+<script src="js/game.js"></script>
+
+</body>
+</html>

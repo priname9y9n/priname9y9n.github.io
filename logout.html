@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>国士無荘 - ログアウト</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>国士無荘</h1>
+    <p class="subtitle">LOG OUT</p>
+
+    <div class="panel">
+
+        <h2>勝負終了</h2>
+
+        <p id="playerName"></p>
+
+        <div class="score-board">
+            <p>最終点数</p>
+            <div id="finalScore">0</div>
+            <span>点</span>
+        </div>
+
+        <p class="logout-message">
+            お疲れ様でした。<br>
+            またのご来店をお待ちしております。
+        </p>
+
+        <button class="main-button" onclick="finishLogout()">
+            ログアウトする
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+window.addEventListener("DOMContentLoaded", function() {
+
+    const name = localStorage.getItem("playerName");
+    const score = Number(localStorage.getItem("score"));
+
+    document.getElementById("playerName").textContent =
+        "プレイヤー：" + name;
+
+    document.getElementById("finalScore").textContent =
+        score.toLocaleString();
+
+});
+
+
+function finishLogout() {
+
+    const name = localStorage.getItem("playerName");
+    const score = Number(localStorage.getItem("score"));
+
+    if (!name) {
+        alert("プレイヤー情報がありません。");
+        location.href = "index.html";
+        return;
+    }
+
+    /*
+     * 今までの記録を取得
+     */
+    let records =
+        JSON.parse(localStorage.getItem("masterRecords")) || [];
+
+
+    /*
+     * 今回の記録を追加
+     */
+    const record = {
+        name: name,
+        score: score,
+        date: new Date().toLocaleString("ja-JP")
+    };
+
+    records.push(record);
+
+
+    /*
+     * master用の記録として保存
+     */
+    localStorage.setItem(
+        "masterRecords",
+        JSON.stringify(records)
+    );
+
+
+    /*
+     * ログイン中の情報を削除
+     */
+    localStorage.removeItem("playerName");
+    localStorage.removeItem("score");
+
+
+    /*
+     * アカウント作成ページへ戻る
+     */
+    location.href = "index.html";
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>国士無荘 - ゲーム選択</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+	<div class="game-menu">
+
+	        <button class="game-button" onclick="location.href='mahjong.html'">
+	            <span>🀄</span>
+	            <strong>麻雀</strong>
+	            <small>MAHJONG</small>
+	        </button>
+
+	        <button class="game-button" onclick="location.href='poker.html'">
+	            <span>♠</span>
+	            <strong>ポーカー</strong>
+	            <small>POKER</small>
+	        </button>
+
+	        <button class="game-button" onclick="location.href='blackjack.html'">
+	            <span>🃏</span>
+	            <strong>ブラックジャック</strong>
+	            <small>BLACKJACK</small>
+	        </button>
+
+	    </div>
+
+		<button class="logout-button" onclick="location.href='logout.html'">
+		    ログアウト
+		</button>
+
+</div>
+
+<script src="js/game.js"></script>
+
+<script>
+
+function saveAndLogout() {
+
+    const name = localStorage.getItem("playerName");
+    const score = Number(localStorage.getItem("score"));
+
+    // 名前と点数が存在する場合だけ保存
+    if (name && !isNaN(score)) {
+
+        // これまでのランキングデータを取得
+        let rankingData =
+            JSON.parse(localStorage.getItem("rankingData")) || {};
+
+        // 名前をキーにして最新の点数を保存
+        rankingData[name] = score;
+
+        // 保存
+        localStorage.setItem(
+            "rankingData",
+            JSON.stringify(rankingData)
+        );
+    }
+
+    // 現在のプレイヤー情報を削除
+    localStorage.removeItem("playerName");
+    localStorage.removeItem("score");
+
+    // ログアウトページへ
+    location.href = "logout.html";
+}
+
+</script>
+
+</body>
+</html>
