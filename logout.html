@@ -56,7 +56,7 @@ window.addEventListener("DOMContentLoaded", function() {
 });
 
 
-function finishLogout() {
+async function finishLogout() {
 
     const name = localStorage.getItem("playerName");
     const score = Number(localStorage.getItem("score"));
@@ -67,40 +67,36 @@ function finishLogout() {
         return;
     }
 
-    /*
-     * 今までの記録を取得
-     */
-    let records =
-        JSON.parse(localStorage.getItem("masterRecords")) || [];
+    if (isNaN(score)) {
+        alert("点数が正しく取得できません。");
+        return;
+    }
 
+    // Supabaseへ送信
+    const { error } = await supabaseClient
+        .from("scores")
+        .insert({
+            name: name,
+            score: score
+        });
 
-    /*
-     * 今回の記録を追加
-     */
-    const record = {
-        name: name,
-        score: score,
-        date: new Date().toLocaleString("ja-JP")
-    };
+    if (error) {
 
-    records.push(record);
-	
-	
-	
+        console.error("Supabase Error:", error);
 
+        alert(
+            "点数の送信に失敗しました。\n\n" +
+            error.message
+        );
 
+        return;
+    }
 
-
-    /*
-     * ログイン中の情報を削除
-     */
+    // 送信成功後にローカルデータを削除
     localStorage.removeItem("playerName");
     localStorage.removeItem("score");
 
-
-    /*
-     * アカウント作成ページへ戻る
-     */
+    // トップへ戻る
     location.href = "index.html";
 }
 
