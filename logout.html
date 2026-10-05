@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>国士無荘 - ログアウト</title>
     <link rel="stylesheet" href="css/style.css">
+	<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+	<script src="js/supabase.js"></script>
 </head>
 
 <body>
@@ -82,15 +84,11 @@ function finishLogout() {
     };
 
     records.push(record);
+	
+	
+	
 
 
-    /*
-     * master用の記録として保存
-     */
-    localStorage.setItem(
-        "masterRecords",
-        JSON.stringify(records)
-    );
 
 
     /*

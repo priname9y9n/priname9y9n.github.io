@@ -5,15 +5,33 @@
 
     <meta charset="UTF-8">
 
-    <title>国士無荘 - マスターランキング</title>
+    <title>
+        国士無荘 - マスターランキング
+    </title>
 
-    <link rel="stylesheet" href="css/master.css">
+
+    <link
+        rel="stylesheet"
+        href="css/master.css"
+    >
+
+
+    <!-- Supabase -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
+
+    <script src="js/supabase.js">
+    </script>
 
 </head>
 
+
 <body>
 
+
 <div class="master-container">
+
 
     <header class="master-header">
 
@@ -26,7 +44,7 @@
         </h1>
 
         <p class="master-description">
-            TOP 9 PLAYER RANKING
+            TOP 10 PLAYER RANKING
         </p>
 
     </header>
@@ -34,68 +52,87 @@
 
     <main>
 
-        <div id="rankingList" class="ranking-list"></div>
+        <div
+            id="rankingList"
+            class="ranking-list"
+        ></div>
 
     </main>
 
 
     <div class="master-buttons">
 
+
         <button
             onclick="displayRanking()"
-            class="refresh-button">
+            class="refresh-button"
+        >
             ランキング更新
         </button>
 
+
         <button
             onclick="location.href='index.html'"
-            class="back-button">
+            class="back-button"
+        >
             戻る
         </button>
 
+
     </div>
+
 
 </div>
 
 
 <script>
 
-function displayRanking() {
+
+async function displayRanking() {
+
 
     const rankingList =
-        document.getElementById("rankingList");
+        document.getElementById(
+            "rankingList"
+        );
 
-    // 一度表示を空にする
+
+    // いったん消去
+
     rankingList.innerHTML = "";
 
 
-    // logout.htmlで保存された記録を取得
-    const records =
-        JSON.parse(localStorage.getItem("masterRecords")) || [];
+    // Supabaseから取得
+
+    const { data, error } =
+        await supabaseClient
+            .from("scores")
+            .select("*")
+            .order("score", {
+                ascending: false
+            })
+            .limit(10);
 
 
-    // 元の配列番号を保持して点数順に並べ替える
-    const sortedRecords = records
-        .map(function(record, index) {
+    // エラー
 
-            return {
-                record: record,
-                originalIndex: index
-            };
+    if (error) {
 
-        })
-        .sort(function(a, b) {
+        console.error(error);
 
-            return Number(b.record.score) -
-                   Number(a.record.score);
+        rankingList.innerHTML = `
+            <div class="no-data">
+                ランキングの取得に失敗しました。
+            </div>
+        `;
 
-        })
-        // 上位10件だけ表示
-        .slice(0, 10);
+        return;
+    }
 
 
-    // データがない場合
-    if (sortedRecords.length === 0) {
+    // データなし
+
+    if (!data || data.length === 0) {
 
         rankingList.innerHTML = `
             <div class="no-data">
@@ -107,148 +144,186 @@ function displayRanking() {
     }
 
 
-    // ランキングを表示
-    sortedRecords.forEach(function(item, index) {
+    // TOP10表示
 
-        const player = item.record;
-        const rank = index + 1;
-
-        const rankingItem =
-            document.createElement("div");
-
-        rankingItem.classList.add("ranking-item");
+    data.forEach(
+        function(player, index) {
 
 
-        // 1～3位専用クラス
-        if (rank === 1) {
+            const rank =
+                index + 1;
 
-            rankingItem.classList.add("rank-1");
 
-        } else if (rank === 2) {
+            const item =
+                document.createElement(
+                    "div"
+                );
 
-            rankingItem.classList.add("rank-2");
 
-        } else if (rank === 3) {
+            item.classList.add(
+                "ranking-item"
+            );
 
-            rankingItem.classList.add("rank-3");
 
-        } else {
+            // 1～3位
 
-            rankingItem.classList.add("rank-normal");
+            if (rank === 1) {
+
+                item.classList.add(
+                    "rank-1"
+                );
+
+            }
+            else if (rank === 2) {
+
+                item.classList.add(
+                    "rank-2"
+                );
+
+            }
+            else if (rank === 3) {
+
+                item.classList.add(
+                    "rank-3"
+                );
+
+            }
+            else {
+
+                item.classList.add(
+                    "rank-normal"
+                );
+
+            }
+
+
+            // メダル
+
+            let medal;
+
+
+            if (rank === 1) {
+
+                medal = "👑";
+
+            }
+            else if (rank === 2) {
+
+                medal = "🥈";
+
+            }
+            else if (rank === 3) {
+
+                medal = "🥉";
+
+            }
+            else {
+
+                medal = rank;
+
+            }
+
+
+            // HTML
+
+            item.innerHTML = `
+
+                <div class="rank-number">
+                    ${medal}
+                </div>
+
+
+                <div class="player-name">
+                    ${escapeHTML(player.name)}
+                </div>
+
+
+                <div class="player-score">
+                    ${Number(player.score)
+                        .toLocaleString()} 点
+                </div>
+
+
+                <div class="player-date">
+                    ${new Date(
+                        player.created_at
+                    ).toLocaleString("ja-JP")}
+                </div>
+
+
+                <button
+                    class="delete-button"
+                    onclick="deleteRecord(${player.id})"
+                >
+                    削除
+                </button>
+
+            `;
+
+
+            rankingList.appendChild(
+                item
+            );
 
         }
-
-
-        // メダル
-        let medal;
-
-        if (rank === 1) {
-
-            medal = "👑";
-
-        } else if (rank === 2) {
-
-            medal = "🥈";
-
-        } else if (rank === 3) {
-
-            medal = "🥉";
-
-        } else {
-
-            medal = rank;
-
-        }
-
-
-        rankingItem.innerHTML = `
-
-            <div class="rank-number">
-                ${medal}
-            </div>
-
-            <div class="player-name">
-                ${escapeHTML(player.name)}
-            </div>
-
-            <div class="player-score">
-                ${Number(player.score).toLocaleString()} 点
-            </div>
-
-            <div class="player-date">
-                ${escapeHTML(player.date || "")}
-            </div>
-
-            <button
-                class="delete-button"
-                onclick="deleteRecord(${item.originalIndex})">
-                削除
-            </button>
-
-        `;
-
-
-        rankingList.appendChild(rankingItem);
-
-    });
+    );
 
 }
 
 
-// 記録を削除
-function deleteRecord(index) {
 
-    const records =
-        JSON.parse(localStorage.getItem("masterRecords")) || [];
+// 削除
 
-
-    const target = records[index];
+async function deleteRecord(id) {
 
 
-    if (!target) {
+    const answer =
+        confirm(
+            "この記録を削除しますか？"
+        );
 
-        alert("削除するデータが見つかりません。");
+
+    if (!answer) {
 
         return;
     }
 
 
-    // 削除確認
-    const result = confirm(
-        "このプレイヤーの記録を削除しますか？\n\n" +
-        "名前：" + target.name + "\n" +
-        "点数：" + Number(target.score).toLocaleString() + " 点"
-    );
+    const { error } =
+        await supabaseClient
+            .from("scores")
+            .delete()
+            .eq("id", id);
 
 
-    if (!result) {
+    if (error) {
+
+        console.error(error);
+
+        alert(
+            "削除に失敗しました。"
+        );
 
         return;
-
     }
 
 
-    // 指定した記録だけ削除
-    records.splice(index, 1);
+    // 再表示
 
-
-    // 保存
-    localStorage.setItem(
-        "masterRecords",
-        JSON.stringify(records)
-    );
-
-
-    // ランキング更新
     displayRanking();
 
 }
 
 
-// HTMLとして解釈されないようにする
+
+// HTMLエスケープ
+
 function escapeHTML(text) {
 
-    const div = document.createElement("div");
+    const div =
+        document.createElement(
+            "div"
+        );
 
     div.textContent = text;
 
@@ -257,11 +332,13 @@ function escapeHTML(text) {
 }
 
 
-// ページ読み込み時にランキング表示
+
+// 初回表示
+
 displayRanking();
 
 </script>
 
-</body>
 
+</body>
 </html>
