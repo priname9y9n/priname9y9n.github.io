@@ -1,0 +1,473 @@
+* {
+    box-sizing: border-box;
+}
+
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+}
+
+
+body {
+    font-family:
+        "Yu Gothic",
+        "Hiragino Kaku Gothic ProN",
+        Meiryo,
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #3a3a3a,
+            #151515 60%,
+            #080808
+        );
+
+    color: white;
+}
+
+
+/* 全体 */
+
+.master-container {
+    width: 100%;
+    max-width: 1100px;
+
+    height: 100vh;
+
+    margin: 0 auto;
+
+    padding:
+        clamp(15px, 3vh, 30px)
+        25px
+        clamp(15px, 2vh, 25px);
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* ヘッダー */
+
+.master-header {
+    text-align: center;
+
+    flex-shrink: 0;
+
+    margin-bottom: clamp(10px, 2vh, 18px);
+}
+
+
+.master-subtitle {
+    margin: 0;
+
+    letter-spacing: 5px;
+
+    font-size: 11px;
+
+    color: #aaa;
+}
+
+
+.master-header h1 {
+    margin: 3px 0;
+
+    font-size: clamp(25px, 4vh, 36px);
+
+    letter-spacing: 4px;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    text-shadow:
+        0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+
+.master-description {
+    margin: 0;
+
+    color: #aaa;
+
+    font-size: 12px;
+}
+
+
+/* ランキング */
+
+main {
+    flex: 1;
+
+    min-height: 0;
+}
+
+
+.ranking-list {
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: clamp(4px, 0.8vh, 7px);
+}
+
+
+/* 各プレイヤー */
+
+.ranking-item {
+    display: flex;
+
+    align-items: center;
+
+    height: clamp(42px, 6.3vh, 58px);
+
+    padding: 5px 12px;
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.07);
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.3);
+
+    flex-shrink: 0;
+}
+
+
+/* 順位 */
+
+.rank-number {
+    width: 55px;
+
+    flex-shrink: 0;
+
+    text-align: center;
+
+    font-weight: bold;
+}
+
+
+/* 名前 */
+
+.player-name {
+    flex: 1;
+
+    min-width: 0;
+
+    padding-left: 8px;
+
+    font-size: clamp(15px, 2.3vh, 21px);
+
+    font-weight: bold;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* 点数 */
+
+.player-score {
+    width: 160px;
+
+    flex-shrink: 0;
+
+    text-align: right;
+
+    font-size: clamp(15px, 2.4vh, 22px);
+
+    font-weight: bold;
+}
+
+
+/* 日時 */
+
+.player-date {
+    width: 150px;
+
+    flex-shrink: 0;
+
+    margin-left: 15px;
+
+    text-align: right;
+
+    font-size: 10px;
+
+    color: #888;
+}
+
+
+/* 1位 */
+
+.rank-1 {
+    height: clamp(55px, 8vh, 70px);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 215, 0, 0.30),
+            rgba(255, 180, 0, 0.08)
+        );
+
+    border: 2px solid rgba(255, 215, 0, 0.8);
+
+    box-shadow:
+        0 0 20px rgba(255, 215, 0, 0.25);
+}
+
+
+.rank-1 .rank-number {
+    font-size: clamp(30px, 5vh, 44px);
+}
+
+
+.rank-1 .player-name {
+    font-size: clamp(20px, 3vh, 27px);
+
+    color: #ffe68a;
+}
+
+
+.rank-1 .player-score {
+    font-size: clamp(20px, 3vh, 27px);
+
+    color: #ffe68a;
+}
+
+
+/* 2位 */
+
+.rank-2 {
+    height: clamp(50px, 7vh, 63px);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(210, 210, 210, 0.23),
+            rgba(160, 160, 160, 0.08)
+        );
+
+    border: 2px solid rgba(210, 210, 210, 0.65);
+
+    box-shadow:
+        0 0 17px rgba(210, 210, 210, 0.15);
+}
+
+
+.rank-2 .rank-number {
+    font-size: clamp(27px, 4.2vh, 37px);
+}
+
+
+.rank-2 .player-name {
+    font-size: clamp(18px, 2.7vh, 24px);
+}
+
+
+.rank-2 .player-score {
+    font-size: clamp(18px, 2.7vh, 24px);
+}
+
+
+/* 3位 */
+
+.rank-3 {
+    height: clamp(49px, 6.8vh, 61px);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(205, 127, 50, 0.27),
+            rgba(150, 80, 30, 0.08)
+        );
+
+    border: 2px solid rgba(205, 127, 50, 0.7);
+
+    box-shadow:
+        0 0 17px rgba(205, 127, 50, 0.18);
+}
+
+
+.rank-3 .rank-number {
+    font-size: clamp(25px, 4vh, 35px);
+}
+
+
+.rank-3 .player-name {
+    font-size: clamp(17px, 2.6vh, 23px);
+}
+
+
+.rank-3 .player-score {
+    font-size: clamp(17px, 2.6vh, 23px);
+}
+
+
+/* 4位以下 */
+
+.rank-normal .rank-number {
+    font-size: clamp(15px, 2.3vh, 19px);
+
+    color: #aaa;
+}
+
+
+.rank-normal .player-score {
+    color: #ddd;
+}
+
+
+/* 削除ボタン */
+
+.delete-button {
+    margin-left: 12px;
+
+    padding: 5px 10px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: #8b1e1e;
+
+    color: white;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    flex-shrink: 0;
+
+    transition:
+        0.2s;
+}
+
+
+.delete-button:hover {
+    background: #c0392b;
+
+    transform: scale(1.05);
+}
+
+
+/* データなし */
+
+.no-data {
+    text-align: center;
+
+    padding: 40px 20px;
+
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    color: #aaa;
+
+    font-size: 17px;
+}
+
+
+/* 下のボタン */
+
+.master-buttons {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-top: clamp(8px, 1.5vh, 15px);
+
+    flex-shrink: 0;
+}
+
+
+.master-buttons button {
+    padding: 8px 20px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s,
+        opacity 0.2s;
+}
+
+
+.master-buttons button:hover {
+    transform: translateY(-2px);
+
+    opacity: 0.85;
+}
+
+
+.refresh-button {
+    background: white;
+
+    color: #111;
+}
+
+
+.back-button {
+    background: #555;
+
+    color: white;
+}
+
+
+/* 画面が小さい場合 */
+
+@media (max-width: 700px) {
+
+    .master-container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+
+    .player-date {
+        display: none;
+    }
+
+
+    .player-score {
+        width: 115px;
+    }
+
+
+    .delete-button {
+        margin-left: 6px;
+
+        padding: 5px 8px;
+    }
+
+
+    .rank-number {
+        width: 40px;
+    }
+
+}
