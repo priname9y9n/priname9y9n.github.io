@@ -270,23 +270,47 @@ h1 {
 }
 
 
-/* 点数ボタン */
+/* =========================
+   点数ボタン
+========================= */
 
 .score-buttons {
+
     display: grid;
 
-    grid-template-columns:
-        repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr);
 
-    gap: 10px;
+    gap: 12px;
 
     max-width: 750px;
 
-    margin: 20px auto;
+    margin: 20px auto 35px;
+
 }
 
+
+/* ロン・ツモのタイトル */
+
+.score-buttons .section-title {
+
+    grid-column: 1 / -1;
+
+    margin: 15px 0 5px;
+
+    padding-bottom: 8px;
+
+}
+
+
+/* 点数ボタン */
+
 .score-buttons button {
-    padding: 14px 5px;
+
+    width: 100%;
+
+    min-height: 65px;
+
+    padding: 10px 5px;
 
     color: #f8edc5;
 
@@ -296,26 +320,61 @@ h1 {
 
     font-family: Georgia, serif;
 
-    font-size: 17px;
+    font-size: 18px;
 
     cursor: pointer;
 
     transition: 0.2s;
+
 }
 
+
+/* マイナスボタン */
+
+.score-buttons.minus button {
+
+    background: #4b2424;
+
+}
+
+
 .score-buttons button:hover {
+
     background: #356d50;
 
     box-shadow:
         0 0 10px rgba(212, 175, 55, 0.4);
+
 }
 
-.score-buttons.minus button {
-    background: #4b2424;
-}
 
 .score-buttons.minus button:hover {
+
     background: #713434;
+
+}
+
+
+/* スマホ */
+
+@media (max-width: 700px) {
+
+    .score-buttons {
+
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 10px;
+
+    }
+
+    .score-buttons button {
+
+        min-height: 60px;
+
+        font-size: 16px;
+
+    }
+
 }
 
 
