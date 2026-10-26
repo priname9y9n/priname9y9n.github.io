@@ -1,3 +1,43 @@
+@charset "UTF-8";
+
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Shippori+Mincho+B1:wght@500;700;800&display=swap");
+
+
+/* =========================
+   カラー・共通設定（style.css と同じ配色）
+========================= */
+
+:root {
+    --felt-dark: #082419;
+    --ink: #030806;
+
+    --gold: #d4af37;
+    --gold-light: #f6e27a;
+    --gold-pale: #fff6cf;
+    --gold-line: rgba(212, 175, 55, 0.5);
+
+    --cream: #f5e6b3;
+    --rose: #e39a9a;
+
+    --silver: #e2e6ea;
+    --bronze: #e0a06a;
+
+    --font-ja: "Shippori Mincho B1", "Yu Mincho", "Hiragino Mincho ProN", serif;
+    --font-en: "Cinzel", Georgia, "Times New Roman", serif;
+
+    --gold-metal:
+        linear-gradient(
+            100deg,
+            #a47b21 0%,
+            #f6e27a 18%,
+            #fff8d6 28%,
+            #d4af37 42%,
+            #8a6a1f 58%,
+            #f0d77a 78%,
+            #a47b21 100%
+        );
+}
+
 * {
     box-sizing: border-box;
 }
@@ -14,23 +54,107 @@ body {
     overflow: hidden;
 }
 
+html {
+    background:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(212, 175, 55, 0.25), transparent 70%),
+        radial-gradient(ellipse 70% 40% at 50% 115%, rgba(140, 25, 25, 0.3), transparent 70%),
+        radial-gradient(ellipse at center, #134232 0%, var(--felt-dark) 50%, var(--ink) 100%);
+    background-color: var(--ink);
+}
 
 body {
-    font-family:
-        "Yu Gothic",
-        "Hiragino Kaku Gothic ProN",
-        Meiryo,
-        sans-serif;
+    font-family: var(--font-ja);
+
+    color: var(--cream);
+
+    -webkit-font-smoothing: antialiased;
+}
+
+
+/* 格子模様と四隅の暗がり */
+
+body::before {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+
+    pointer-events: none;
 
     background:
-        radial-gradient(
-            circle at top,
-            #3a3a3a,
-            #151515 60%,
-            #080808
+        radial-gradient(ellipse at center, transparent 45%, rgba(0, 0, 0, 0.75) 100%),
+        repeating-linear-gradient(45deg, rgba(212, 175, 55, 0.045) 0 1px, transparent 1px 34px),
+        repeating-linear-gradient(-45deg, rgba(212, 175, 55, 0.045) 0 1px, transparent 1px 34px);
+}
+
+
+/* 回る光の筋 */
+
+body::after {
+    content: "";
+
+    position: fixed;
+    top: 0;
+    left: 50%;
+    z-index: -1;
+
+    width: 220vmax;
+    height: 220vmax;
+
+    pointer-events: none;
+
+    background:
+        repeating-conic-gradient(
+            from 0deg,
+            rgba(246, 226, 122, 0.07) 0deg 5deg,
+            transparent 5deg 15deg
         );
 
-    color: white;
+    -webkit-mask-image: radial-gradient(circle closest-side, #000 0%, transparent 55%);
+    mask-image: radial-gradient(circle closest-side, #000 0%, transparent 55%);
+
+    transform: translate(-50%, -50%);
+
+    animation: rays 140s linear infinite;
+}
+
+@keyframes rays {
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+@keyframes shimmer {
+    to {
+        background-position: 200% center;
+    }
+}
+
+@keyframes rise {
+    from {
+        opacity: 0;
+        transform: translateY(-16px);
+    }
+}
+
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(-40px);
+    }
+}
+
+@keyframes sweep {
+    0% { transform: translateX(-120%); }
+    35%, 100% { transform: translateX(120%); }
+}
+
+@keyframes crown {
+    50% {
+        transform: translateY(-3px) scale(1.06);
+        filter: drop-shadow(0 0 18px rgba(255, 215, 0, 0.9));
+    }
 }
 
 
@@ -54,55 +178,83 @@ body {
 }
 
 
-/* ヘッダー */
+/* =========================
+   ヘッダー
+========================= */
 
 .master-header {
     text-align: center;
 
     flex-shrink: 0;
 
-    margin-bottom: clamp(10px, 2vh, 18px);
+    margin-bottom: clamp(10px, 2.2vh, 22px);
+
+    animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
 }
 
+.master-subtitle,
+.master-description {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
 
-.master-subtitle {
     margin: 0;
 
-    letter-spacing: 5px;
+    color: var(--gold);
 
-    font-size: 11px;
-
-    color: #aaa;
+    font-family: var(--font-en);
+    font-size: clamp(10px, 1.4vh, 13px);
+    font-weight: 700;
+    letter-spacing: 0.5em;
 }
 
+.master-subtitle::before,
+.master-subtitle::after {
+    content: "";
+
+    width: clamp(40px, 10vw, 120px);
+    height: 1px;
+
+    background: linear-gradient(90deg, transparent, var(--gold));
+}
+
+.master-subtitle::after {
+    background: linear-gradient(90deg, var(--gold), transparent);
+}
 
 .master-header h1 {
-    margin: 3px 0;
+    margin: clamp(2px, 0.6vh, 6px) 0;
+    padding-left: 0.12em;
 
-    font-size: clamp(25px, 4vh, 36px);
+    font-family: var(--font-en);
+    font-size: clamp(30px, 6.5vh, 64px);
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    line-height: 1.1;
 
-    letter-spacing: 4px;
+    background: var(--gold-metal);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 
-    font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
+    filter:
+        drop-shadow(0 0 12px rgba(212, 175, 55, 0.5))
+        drop-shadow(0 3px 2px rgba(0, 0, 0, 0.6));
 
-    text-shadow:
-        0 0 10px rgba(255, 255, 255, 0.2);
+    animation: shimmer 7s linear infinite;
 }
-
 
 .master-description {
-    margin: 0;
-
-    color: #aaa;
-
-    font-size: 12px;
+    color: rgba(245, 230, 179, 0.6);
+    letter-spacing: 0.4em;
 }
 
 
-/* ランキング */
+/* =========================
+   ランキング
+========================= */
 
 main {
     flex: 1;
@@ -110,52 +262,72 @@ main {
     min-height: 0;
 }
 
-
 .ranking-list {
     width: 100%;
+    height: 100%;
 
     display: flex;
-
     flex-direction: column;
 
-    gap: clamp(4px, 0.8vh, 7px);
+    gap: clamp(4px, 0.8vh, 8px);
 }
 
 
 /* 各プレイヤー */
 
 .ranking-item {
-    display: flex;
+    position: relative;
+    overflow: hidden;
 
+    display: flex;
     align-items: center;
 
-    height: clamp(42px, 6.3vh, 58px);
+    /* 画面の高さに合わせて10行が必ず収まるように伸縮 */
+    flex: 1 1 0;
+    min-height: 0;
+    max-height: 58px;
 
-    padding: 5px 12px;
+    padding: 5px 16px 5px 12px;
 
-    border-radius: 10px;
+    border-radius: 3px;
 
-    background: rgba(255, 255, 255, 0.07);
+    background:
+        linear-gradient(90deg, rgba(20, 55, 40, 0.85), rgba(6, 18, 13, 0.85));
 
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    border-left: 3px solid rgba(212, 175, 55, 0.6);
 
     box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.3);
+        0 6px 14px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 246, 207, 0.06);
 
-    flex-shrink: 0;
+    animation: slide-in 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
 }
+
+/* 上から順に滑り込む */
+.ranking-item:nth-child(1)  { animation-delay: 0.05s; }
+.ranking-item:nth-child(2)  { animation-delay: 0.12s; }
+.ranking-item:nth-child(3)  { animation-delay: 0.19s; }
+.ranking-item:nth-child(4)  { animation-delay: 0.26s; }
+.ranking-item:nth-child(5)  { animation-delay: 0.31s; }
+.ranking-item:nth-child(6)  { animation-delay: 0.36s; }
+.ranking-item:nth-child(7)  { animation-delay: 0.41s; }
+.ranking-item:nth-child(8)  { animation-delay: 0.46s; }
+.ranking-item:nth-child(9)  { animation-delay: 0.51s; }
+.ranking-item:nth-child(10) { animation-delay: 0.56s; }
 
 
 /* 順位 */
 
 .rank-number {
-    width: 55px;
+    width: 60px;
 
     flex-shrink: 0;
 
     text-align: center;
 
-    font-weight: bold;
+    font-family: var(--font-en);
+    font-weight: 900;
 }
 
 
@@ -166,11 +338,11 @@ main {
 
     min-width: 0;
 
-    padding-left: 8px;
+    padding-left: 10px;
 
     font-size: clamp(15px, 2.3vh, 21px);
-
-    font-weight: bold;
+    font-weight: 700;
+    letter-spacing: 0.08em;
 
     overflow: hidden;
 
@@ -183,15 +355,17 @@ main {
 /* 点数 */
 
 .player-score {
-    width: 160px;
+    width: 190px;
 
     flex-shrink: 0;
 
     text-align: right;
 
+    font-family: var(--font-en);
     font-size: clamp(15px, 2.4vh, 22px);
+    font-weight: 700;
 
-    font-weight: bold;
+    font-variant-numeric: tabular-nums;
 }
 
 
@@ -208,162 +382,201 @@ main {
 
     font-size: 10px;
 
-    color: #888;
+    color: rgba(245, 230, 179, 0.4);
 }
 
 
-/* 1位 */
+/* =========================
+   1位（黄金）
+========================= */
 
 .rank-1 {
-    height: clamp(55px, 8vh, 70px);
+    flex-grow: 1.5;
+    max-height: 82px;
+
+    background:
+        radial-gradient(ellipse at 15% 50%, rgba(255, 230, 120, 0.35), transparent 60%),
+        linear-gradient(90deg, rgba(150, 110, 20, 0.55), rgba(60, 40, 5, 0.55) 60%, rgba(20, 15, 3, 0.6));
+
+    border: 1px solid rgba(255, 220, 100, 0.9);
+    border-left: 4px solid #ffe27a;
+
+    box-shadow:
+        0 0 30px rgba(255, 215, 0, 0.35),
+        0 10px 24px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 246, 207, 0.4);
+}
+
+/* 光が定期的に走る */
+.rank-1::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
 
     background:
         linear-gradient(
-            135deg,
-            rgba(255, 215, 0, 0.30),
-            rgba(255, 180, 0, 0.08)
+            110deg,
+            transparent 35%,
+            rgba(255, 246, 207, 0.35) 50%,
+            transparent 65%
         );
 
-    border: 2px solid rgba(255, 215, 0, 0.8);
+    transform: translateX(-120%);
 
-    box-shadow:
-        0 0 20px rgba(255, 215, 0, 0.25);
+    animation: sweep 5s ease-in-out 1s infinite;
 }
-
 
 .rank-1 .rank-number {
-    font-size: clamp(30px, 5vh, 44px);
+    font-size: clamp(30px, 5.5vh, 48px);
+
+    animation: crown 2.6s ease-in-out infinite;
 }
 
-
-.rank-1 .player-name {
-    font-size: clamp(20px, 3vh, 27px);
-
-    color: #ffe68a;
-}
-
-
+.rank-1 .player-name,
 .rank-1 .player-score {
-    font-size: clamp(20px, 3vh, 27px);
+    font-size: clamp(21px, 3.6vh, 32px);
 
-    color: #ffe68a;
+    /* 暗い色を含まない明るい金で常に読みやすく */
+    background:
+        linear-gradient(
+            100deg,
+            #f0d77a 0%,
+            #fff8d6 25%,
+            #f6e27a 50%,
+            #e2bd4c 75%,
+            #f0d77a 100%
+        );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.45));
+
+    animation: shimmer 6s linear infinite;
+}
+
+.rank-1 .player-date {
+    color: rgba(255, 240, 190, 0.6);
 }
 
 
-/* 2位 */
+/* 2位（銀） */
 
 .rank-2 {
-    height: clamp(50px, 7vh, 63px);
+    flex-grow: 1.25;
+    max-height: 66px;
 
     background:
-        linear-gradient(
-            135deg,
-            rgba(210, 210, 210, 0.23),
-            rgba(160, 160, 160, 0.08)
-        );
+        radial-gradient(ellipse at 15% 50%, rgba(255, 255, 255, 0.18), transparent 60%),
+        linear-gradient(90deg, rgba(120, 130, 140, 0.4), rgba(30, 35, 40, 0.55));
 
-    border: 2px solid rgba(210, 210, 210, 0.65);
+    border: 1px solid rgba(226, 230, 234, 0.6);
+    border-left: 4px solid var(--silver);
 
     box-shadow:
-        0 0 17px rgba(210, 210, 210, 0.15);
+        0 0 18px rgba(226, 230, 234, 0.15),
+        0 8px 20px rgba(0, 0, 0, 0.45);
 }
-
 
 .rank-2 .rank-number {
-    font-size: clamp(27px, 4.2vh, 37px);
+    font-size: clamp(27px, 4.4vh, 38px);
 }
 
-
-.rank-2 .player-name {
-    font-size: clamp(18px, 2.7vh, 24px);
-}
-
-
+.rank-2 .player-name,
 .rank-2 .player-score {
-    font-size: clamp(18px, 2.7vh, 24px);
+    font-size: clamp(18px, 2.9vh, 26px);
+
+    color: #f4f6f8;
+
+    text-shadow: 0 0 10px rgba(226, 230, 234, 0.35);
 }
 
 
-/* 3位 */
+/* 3位（銅） */
 
 .rank-3 {
-    height: clamp(49px, 6.8vh, 61px);
+    flex-grow: 1.2;
+    max-height: 63px;
 
     background:
-        linear-gradient(
-            135deg,
-            rgba(205, 127, 50, 0.27),
-            rgba(150, 80, 30, 0.08)
-        );
+        radial-gradient(ellipse at 15% 50%, rgba(255, 170, 100, 0.2), transparent 60%),
+        linear-gradient(90deg, rgba(140, 75, 30, 0.45), rgba(40, 20, 8, 0.55));
 
-    border: 2px solid rgba(205, 127, 50, 0.7);
+    border: 1px solid rgba(224, 160, 106, 0.6);
+    border-left: 4px solid var(--bronze);
 
     box-shadow:
-        0 0 17px rgba(205, 127, 50, 0.18);
+        0 0 18px rgba(224, 160, 106, 0.15),
+        0 8px 20px rgba(0, 0, 0, 0.45);
 }
-
 
 .rank-3 .rank-number {
-    font-size: clamp(25px, 4vh, 35px);
+    font-size: clamp(25px, 4.1vh, 36px);
 }
 
-
-.rank-3 .player-name {
-    font-size: clamp(17px, 2.6vh, 23px);
-}
-
-
+.rank-3 .player-name,
 .rank-3 .player-score {
-    font-size: clamp(17px, 2.6vh, 23px);
+    font-size: clamp(17px, 2.7vh, 24px);
+
+    color: #ffd9b8;
+
+    text-shadow: 0 0 10px rgba(224, 160, 106, 0.35);
 }
 
 
 /* 4位以下 */
 
 .rank-normal .rank-number {
-    font-size: clamp(15px, 2.3vh, 19px);
+    font-size: clamp(16px, 2.5vh, 22px);
 
-    color: #aaa;
+    color: var(--gold);
 }
-
 
 .rank-normal .player-score {
-    color: #ddd;
+    color: var(--gold-pale);
 }
 
 
-/* 削除ボタン */
+/* 削除ボタン（目立ちすぎないように） */
 
 .delete-button {
-    margin-left: 12px;
+    position: relative;
+    z-index: 1;
 
+    margin-left: 14px;
     padding: 5px 10px;
 
-    border: none;
+    border: 1px solid rgba(227, 154, 154, 0.4);
+    border-radius: 2px;
 
-    border-radius: 6px;
+    background: rgba(80, 15, 15, 0.4);
 
-    background: #8b1e1e;
+    color: var(--rose);
 
-    color: white;
-
+    font-family: var(--font-ja);
     font-size: 11px;
+    font-weight: 700;
 
-    font-weight: bold;
+    opacity: 0.55;
 
     cursor: pointer;
 
-    flex-shrink: 0;
-
-    transition:
-        0.2s;
+    transition: opacity 0.2s, background 0.2s;
 }
 
+.ranking-item:hover .delete-button,
+.delete-button:focus-visible {
+    opacity: 1;
+}
 
 .delete-button:hover {
-    background: #c0392b;
+    background: #8b1e1e;
 
-    transform: scale(1.05);
+    color: #fff;
 }
 
 
@@ -372,74 +585,92 @@ main {
 .no-data {
     text-align: center;
 
-    padding: 40px 20px;
+    padding: 48px 20px;
 
-    border-radius: 12px;
+    border: 1px solid var(--gold-line);
 
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(4, 14, 10, 0.75);
 
-    color: #aaa;
+    color: var(--cream);
 
-    font-size: 17px;
+    font-size: 18px;
+    letter-spacing: 0.15em;
 }
 
 
-/* 下のボタン */
+/* =========================
+   ボタン
+========================= */
 
 .master-buttons {
     display: flex;
 
     justify-content: center;
 
-    gap: 10px;
+    gap: 14px;
 
-    margin-top: clamp(8px, 1.5vh, 15px);
+    margin-top: clamp(8px, 1.8vh, 18px);
 
     flex-shrink: 0;
 }
 
-
 .master-buttons button {
-    padding: 8px 20px;
+    padding: 9px 26px;
 
-    border: none;
+    border-radius: 2px;
 
-    border-radius: 8px;
-
-    font-size: 13px;
-
-    font-weight: bold;
+    font-family: var(--font-ja);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
 
     cursor: pointer;
 
-    transition:
-        transform 0.2s,
-        opacity 0.2s;
+    transition: box-shadow 0.25s, background 0.25s, transform 0.15s;
 }
 
-
-.master-buttons button:hover {
-    transform: translateY(-2px);
-
-    opacity: 0.85;
+.master-buttons button:active {
+    transform: translateY(1px);
 }
-
 
 .refresh-button {
-    background: white;
+    color: #2a1c05;
 
-    color: #111;
+    background:
+        linear-gradient(180deg, #fff3b8 0%, #e5c45a 40%, #b8892a 100%);
+
+    border: 1px solid #fff0b0;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.7),
+        0 6px 16px rgba(0, 0, 0, 0.45);
 }
 
+.refresh-button:hover {
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.7),
+        0 6px 16px rgba(0, 0, 0, 0.45),
+        0 0 24px rgba(246, 226, 122, 0.55);
+}
 
 .back-button {
-    background: #555;
+    color: var(--cream);
 
-    color: white;
+    background: rgba(0, 0, 0, 0.35);
+
+    border: 1px solid var(--gold-line);
+}
+
+.back-button:hover {
+    background: rgba(212, 175, 55, 0.12);
+
+    box-shadow: 0 0 16px rgba(212, 175, 55, 0.3);
 }
 
 
-/* 画面が小さい場合 */
+/* =========================
+   スマホ
+========================= */
 
 @media (max-width: 700px) {
 
@@ -448,26 +679,38 @@ main {
         padding-right: 10px;
     }
 
-
     .player-date {
         display: none;
     }
 
-
     .player-score {
-        width: 115px;
+        width: 120px;
     }
-
 
     .delete-button {
         margin-left: 6px;
-
         padding: 5px 8px;
-    }
 
+        opacity: 1;
+    }
 
     .rank-number {
         width: 40px;
     }
 
+    .master-subtitle,
+    .master-description {
+        letter-spacing: 0.3em;
+    }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
 }
